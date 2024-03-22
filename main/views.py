@@ -24,11 +24,13 @@ def index(request):
 def category(request):
     """ Yangiliklar kategoriyasi """
     categories = models.Category.objects.all()
-    region = models.Region.objects.all()
+    regions = models.Region.objects.all()
+    posts = models.Post.objects.all()
 
     context = {
         'categories':categories,
-        'region':region,
+        'regions':regions,
+        'posts':posts,
     }
     return render(request, 'front/category.html', context)
 
@@ -45,3 +47,18 @@ def contact(request):
         except:
             ...
     return render(request, 'front/contact.html')
+
+def category_post(request):
+    """ Kategoriya va unga tegishli yangiliklar """
+    category = models.Category.objects.all()
+    post = models.Post.objects.filter(category=category)
+    context = {
+        'category':category,
+        'post':post,
+    }
+
+    return render(request, 'front/base.html', context)
+
+def single_news(request, id):
+    post = models.Post.objects.get(id=id)
+    return render(request, 'front/single_standard.html', {'post':post})

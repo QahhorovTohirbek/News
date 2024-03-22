@@ -46,7 +46,7 @@
    	<div class="row header-content">
 
    		<div class="logo">
-	         <a href="index.html">Author</a>
+	         <a href="{% url 'main:index'%}">Author</a>
 	      </div>
 
 	   	<nav id="main-nav-wrap">
@@ -56,11 +56,13 @@
 						<a href="{% url 'main:category' %}" title="">Categories</a>
 						<ul class="sub-menu">
 						{% for category in categories%}
-			            <li><a href="{% url 'main:category' %}"> {{category.name}} </a></li>
+			            <li><a href="{% url 'main:category_post' %}"> {{category.name}} </a></li>
 						{% endfor %}
 			         </ul>
 					</li>	
 					<li><a href="{% url 'main:contact'%}" title="">Contact</a></li>										
+					<li><a href="{% url 'dashboard:log_in'%}" title="">Login</a></li>										
+					<li><a href="{% url 'dashboard:register'%}" title="">Register</a></li>										
 				</ul>
 			</nav> <!-- end main-nav-wrap -->
 
@@ -88,10 +90,10 @@
    </header> <!-- end header -->
 
 {% block content %}
-{% endblock %}{% static'front/
+{% endblock %}
 
    
-   <!--'%} footer
+   <!--footer
    ================================================== -->
    <footer>
 

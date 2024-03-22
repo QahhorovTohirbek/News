@@ -1,0 +1,44 @@
+{% extends "front/base.html" %}
+{% block content %}
+   <section id="bricks" class="with-top-sep">
+
+   	<div class="row masonry">
+
+   		<!-- brick-wrapper -->
+         <div class="bricks-wrapper">
+
+         	<div class="grid-sizer"></div>
+
+			 {% for post in posts %}
+         	<article class="brick entry format-standard animate-this">
+
+               <div class="entry-thumb">
+                  <a href="single-standard.html" class="thumb-link">
+	                  <img src="{{post.banner_img.url}}" alt="news_img">             
+                  </a>
+               </div>
+
+               <div class="entry-text">
+               	<div class="entry-header">
+
+               		<div class="entry-meta">
+               			<span class="cat-links">
+               				<a href="#"></a> 
+               				<a href="#"></a>               				
+               			</span>			
+               		</div>
+               		<h1 class="entry-title"><a href="single-standard.html">{{post.title}}</a></h1>
+               		
+               	</div>
+						<div class="entry-excerpt">
+								{{post.body}}						
+						</div>
+               </div>
+			</article> <!-- end article -->
+			{% endfor %}
+			</div> <!-- end brick-wrapper --> 
+
+   	</div> <!-- end row -->
+
+   </section> <!-- bricks -->
+{% endblock %}
