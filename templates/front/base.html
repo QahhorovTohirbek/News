@@ -51,19 +51,20 @@
 
 	   	<nav id="main-nav-wrap">
 				<ul class="main-navigation sf-menu">
-					<li class="current"><a href="{% url 'main:index'%}" title="">Home</a></li>									
+					<li class="current"><a href="{% url 'main:index' %}" title="">Home</a></li>
 					<li class="has-children">
 						<a href="{% url 'main:category' %}" title="">Categories</a>
 						<ul class="sub-menu">
-						{% for category in categories%}
-			            <li><a href="{% url 'main:category_post' %}"> {{category.name}} </a></li>
-						{% endfor %}
-			         </ul>
-					</li>	
-					<li><a href="{% url 'main:contact'%}" title="">Contact</a></li>										
-					<li><a href="{% url 'dashboard:log_in'%}" title="">Login</a></li>										
-					<li><a href="{% url 'dashboard:register'%}" title="">Register</a></li>										
+							{% for category in categories %}
+								<li><a href="{% url 'main:category_post' category.id %}">{{ category.name }}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li><a href="{% url 'main:contact' %}" title="">Contact</a></li>
+					<li><a href="{% url 'dashboard:log_in' %}" title="">Login</a></li>
+					<li><a href="{% url 'dashboard:register' %}" title="">Register</a></li>
 				</ul>
+			
 			</nav> <!-- end main-nav-wrap -->
 
 			<div class="search-wrap">

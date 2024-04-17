@@ -37,7 +37,11 @@ def create_category(request):
 def list_category(request):
     """ Kategoriya ro'yxati """
     category = models.Category.objects.all()
-    return render(request, 'dashboard/category/list.html', {'category':category})
+    context = {
+        'category':category,
+        }
+
+    return render(request, 'dashboard/category/list.html', context)
 
 
 @login_required(login_url='dashboard:log_in')
@@ -47,7 +51,7 @@ def update_category(request, id):
     if request.method == 'POST':
         category.name = request.POST['name']
         category.save()
-        return redirect('dashboart:list_category', category.id)
+        return redirect('dashboard:list_category')
     return render(request, 'dashboard:update_category', {'category':category})
 
 
@@ -80,15 +84,23 @@ def create_post(request):
         title = request.POST['title']
         body = request.POST['body']
         date = request.POST['date']
-        if request.method == 'FILES':
+        # Check if file was uploaded
+        if 'banner_img' in request.FILES:
             banner_img = request.FILES['banner_img']
-        models.Post.objects.create(
-            title=title,
-            body=body,
-            date=date,
-            banner_img=banner_img,
-        )
-    return render(request, 'dashboard/post/create.html', {'categories':categories})
+            models.Post.objects.create(
+                title=title,
+                body=body,
+                date=date,
+                banner_img=banner_img,
+            )
+        else:
+            models.Post.objects.create(
+                title=title,
+                body=body,
+                date=date,
+            )
+    return render(request, 'dashboard/post/create.html', {'categories': categories})
+
 
 @login_required(login_url='dashboard:log_in')
 def list_post(request):
@@ -124,18 +136,6 @@ def delete_post(request, id):
     return redirect('dashboard:list_post')
 
 
-def register(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirm = request.POST['password_confirm']
-        if password == password_confirm:
-            User.objects.create_user(
-                username=username,
-                password=password
-            )
-            return redirect('dashboard:log_in')
-        return render(request, 'dashboard/auth/register.html')
 
 
 def log_in(request):
@@ -146,12 +146,12 @@ def log_in(request):
         if user is not None:
             login(request, user)
             return redirect('dashboard:index')
-    return render(request, 'dashboard/auth/login.html')
+    return render(request, 'auth/login.html')
 
 
 def log_out(request):
     logout(request)
-    return redirect('main:index')
+    return redirect('dashboard:index')
 
 
    

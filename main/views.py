@@ -1,64 +1,63 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from . import models
+from . import serializers
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
 
-def index(request):
-    """ Bosh sahifa """
+
+
+
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET'])
+def region_list(request):
     region = models.Region.objects.all()
+    region_serializer = serializers.RegionSerializerList(region, many=True)
+
+    return Response(region_serializer.data)
+
+
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET'])
+def region_detail(request, id):
+    region = models.Region.objects.get(id=id)
+    region_serializer = serializers.RegionSerializerDetail(region)
+
+    return Response(region_serializer.data)
+
+
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET'])
+def category_list(request):
     category = models.Category.objects.all()
-    posts = models.Post.objects.all()
-    post_img = models.PostImage.objects.all()
-    post_vid = models.PostVideo.objects.all()
-    comment = models.Comment.objects.all()
+    category_serializer = serializers.CategorySerializerList(category, many=True)
 
-    context = {
-        'region': region,
-        'category': category,
-        'posts': posts,
-        'post_img': post_img,
-        'post_vid': post_vid,
-        'comment': comment,
-    }
-    return render(request, 'front/index.html', context)
+    return Response(category_serializer.data)
 
 
-def category(request):
-    """ Yangiliklar kategoriyasi """
-    categories = models.Category.objects.all()
-    regions = models.Region.objects.all()
-    posts = models.Post.objects.all()
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET'])
+def category_detail(request, id):
+    category = models.Category.objects.get(id=id)
+    category_serializer = serializers.CategorySerializerDetail(category)
 
-    context = {
-        'categories':categories,
-        'regions':regions,
-        'posts':posts,
-    }
-    return render(request, 'front/category.html', context)
+    return Response(category_serializer.data)
 
 
-def contact(request):
-    if request.method == 'POST':
-        try:
-            models.Contact.objects.create(
-                name=request.POST['name'],
-                phone=request.POST['phone'],
-                email=request.POST['email'],
-                body=request.POST['message']
-            )
-        except:
-            ...
-    return render(request, 'front/contact.html')
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET'])
+def post_list(request):
+    post = models.Post.objects.all()
+    post_serializer = serializers.PostSerializerList(post, many=True)
 
-def category_post(request):
-    """ Kategoriya va unga tegishli yangiliklar """
-    category = models.Category.objects.all()
-    post = models.Post.objects.filter(category=category)
-    context = {
-        'category':category,
-        'post':post,
-    }
+    return Response(post_serializer.data)
 
-    return render(request, 'front/base.html', context)
 
-def single_news(request, id):
+@login_required(login_url='dashboard:log_in')
+@api_view(['GET', 'POST'])
+def post_detail(request, id):
     post = models.Post.objects.get(id=id)
-    return render(request, 'front/single_standard.html', {'post':post})
+    post_serializer = serializers.PostSerializerDetail(post)
+
+    return Response(post_serializer.data)

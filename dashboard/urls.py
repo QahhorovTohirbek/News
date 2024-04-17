@@ -21,9 +21,7 @@ urlpatterns = [
     path('delete-post/<int:id>/', views.delete_post, name='delete_post'),
 
     # Avtorizatsiya
-    path('register/', views.register, name='register'),
     path('log-in/', views.log_in, name='log_in'),
     path('log-out/', views.log_out, name='log_out'),
     
-
 ]
