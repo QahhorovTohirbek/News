@@ -26,6 +26,7 @@ class Post(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
 
+
 class PostImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     img = models.ImageField(upload_to='post-img/')

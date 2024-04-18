@@ -51,6 +51,7 @@ def post_list(request):
     post = models.Post.objects.all()
     post_serializer = serializers.PostSerializerList(post, many=True)
 
+
     return Response(post_serializer.data)
 
 
