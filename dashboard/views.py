@@ -80,11 +80,15 @@ def detail_category(request):
 def create_post(request):
     """ Post yaratish """
     categories = models.Category.objects.all()
+    authors = models.User.objects.all()
+    context = {
+            'categories': categories,
+            'authors':authors
+            }
     if request.method == 'POST':
         title = request.POST['title']
         body = request.POST['body']
         date = request.POST['date']
-        # Check if file was uploaded
         if 'banner_img' in request.FILES:
             banner_img = request.FILES['banner_img']
             models.Post.objects.create(
@@ -99,7 +103,8 @@ def create_post(request):
                 body=body,
                 date=date,
             )
-    return render(request, 'dashboard/post/create.html', {'categories': categories})
+        print(request.POST)
+    return render(request, 'dashboard/post/create.html', context)
 
 
 @login_required(login_url='dashboard:log_in')
